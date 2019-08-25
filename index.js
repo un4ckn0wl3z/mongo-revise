@@ -9,8 +9,13 @@ const courseSchema = new mongoose.Schema({
     tags: {
         type: Array,
         validate: {
-            validator: function(v){
-                return v && v.length > 0;
+            isAsync: true,
+            validator: function(v, callback){
+                setTimeout(()=>{
+                    const result = v && v.length > 0;
+                    callback(result);
+                },10000);
+                // return v && v.length > 0;
             },
             message: 'A course should have at least ont tag.'
         }
@@ -34,7 +39,7 @@ async function createCouse() {
     const course = new Course({
         name: 'Ethical hacking Course',
         author: 'Anuwat',
-        tags: ['hacking', 'securirt'],
+       // tags: ['hacking', 'securirt'],
         category: 'web',
         isPublished: false
     });
