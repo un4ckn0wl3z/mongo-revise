@@ -1,0 +1,23 @@
+{
+  "name": "mongo-revise",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/un4ckn0wl3z/mongo-revise.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/un4ckn0wl3z/mongo-revise/issues"
+  },
+  "homepage": "https://github.com/un4ckn0wl3z/mongo-revise#readme",
+  "dependencies": {
+    "mongoose": "^5.6.10"
+  }
+}
