@@ -4,11 +4,15 @@ mongoose.connect('mongodb://localhost/playgound', { useNewUrlParser: true })
     .catch((err) => console.log('Connected to MongoDB...', err));
 
 const courseSchema = new mongoose.Schema({
-    name: String,
+    name: { type: String, required: true },
     author: String,
     tags: [String],
     date: { type: Date, default: Date.now },
-    isPublished: Boolean
+    isPublished: Boolean,
+    price: {
+        type: Number,
+        required: function (){ return this.isPublished ; }
+    }
 });
 const Course = mongoose.model('Course', courseSchema);
 
@@ -17,7 +21,7 @@ async function createCouse() {
         name: 'Ethical hacking Course',
         author: 'Anuwat',
         tags: ['hacking', 'securirt'],
-        isPublished: true
+        isPublished: false
     });
     try {
         const result = await course.save();
@@ -85,19 +89,29 @@ async function updateCouse(id) {
 
 async function updateCouseFirst(id) {
     //const result = await Course.update({ _id: id },{
-    const result = await Course.findByIdAndUpdate(id,{
-        $set:{
-            author:'Luck',
+    const result = await Course.findByIdAndUpdate(id, {
+        $set: {
+            author: 'Luck',
             isPublished: true
         }
-    },{
-        new: true
-    });
+    }, {
+            new: true
+        });
     console.log(result);
 
 }
 
-//createCouse();
+async function removeCourse(id) {
+    // const result = await Course.deleteOne({
+    //     _id: id
+    // })
+
+    const result = await Course.findByIdAndDelete(id);
+    console.log(result);
+}
+
+createCouse();
 //getCourses();
 //updateCouse('5d6223bacb103031d4d2012a');
-updateCouseFirst('5d6223bacb103031d4d2012a');
+//updateCouseFirst('5d6223bacb103031d4d2012a');
+//removeCourse('5d6223bacb103031d4d2012a');
