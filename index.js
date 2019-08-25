@@ -43,11 +43,13 @@ async function getCourses() {
     // or
     // and
     try {
+        const pageNumber = 2;
+        const pageSize = 10;
         const course = await Course
-            //.find({ author: 'Anuwat' })
+            .find({ author: 'Anuwat' })
             //.find({ author: /^Anuwat/i }) // regex start with
             //.find({ author: /K$/i }) // regex end with
-            .find({ author: /.*An.*/ }) // regex contain
+            //.find({ author: /.*An.*/ }) // regex contain
             //.find({ price: { $gt: 10, $lte: 20 } })
             //.find({ price: { $in: [10, 20, 30] } })
             //.find()
@@ -55,12 +57,47 @@ async function getCourses() {
             //.and([{ author: 'Anuwat' }, { isPublished: true }])
             //.limit(1)
             .sort({ name: 1 })
-            .select({ name: 1, tags: 1 });
+            .select({ name: 1, tags: 1 })
+            .skip((pageNumber - 1) * pageSize)
+            .limit(pageSize);
+        //.count(); return counter
+
         console.log(course);
     } catch (error) {
         console.log(error);
     }
 }
 
+async function updateCouse(id) {
+    const course = await Course.findById(id)
+    if (!course) return;
+    // course.isPublished = true;
+    // course.author = 'John';
+    course.set({
+        isPublished: true,
+        author: 'John'
+    });
+    const result = await course.save();
+    console.log(result);
+
+}
+
+
+async function updateCouseFirst(id) {
+    //const result = await Course.update({ _id: id },{
+    const result = await Course.findByIdAndUpdate(id,{
+        $set:{
+            author:'Luck',
+            isPublished: true
+        }
+    },{
+        new: true
+    });
+    console.log(result);
+
+}
+
 //createCouse();
-getCourses();
+//getCourses();
+//updateCouse('5d6223bacb103031d4d2012a');
+updateCouseFirst('5d6223bacb103031d4d2012a');
