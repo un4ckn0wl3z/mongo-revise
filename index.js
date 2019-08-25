@@ -6,9 +6,23 @@ mongoose.connect('mongodb://localhost/playgound', { useNewUrlParser: true })
 const courseSchema = new mongoose.Schema({
     name: { type: String, required: true },
     author: String,
-    tags: [String],
+    tags: {
+        type: Array,
+        validate: {
+            validator: function(v){
+                return v && v.length > 0;
+            },
+            message: 'A course should have at least ont tag.'
+        }
+
+    },
     date: { type: Date, default: Date.now },
     isPublished: Boolean,
+    category:{
+        type: String,
+        enum: ['web','api','device'],
+        required: true
+    },
     price: {
         type: Number,
         required: function (){ return this.isPublished ; }
@@ -21,6 +35,7 @@ async function createCouse() {
         name: 'Ethical hacking Course',
         author: 'Anuwat',
         tags: ['hacking', 'securirt'],
+        category: 'web',
         isPublished: false
     });
     try {
